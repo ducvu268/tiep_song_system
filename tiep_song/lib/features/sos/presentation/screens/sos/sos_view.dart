@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tiep_song/common/bloc/base_state.dart';
+import 'package:tiep_song/common/constants/app_text_style.dart';
 import 'package:tiep_song/common/router/app_router.dart';
 import 'package:tiep_song/common/widgets/app_button.dart';
+import 'package:tiep_song/common/widgets/app_scaffold.dart';
 import 'package:tiep_song/features/sos/domain/models/relief_need_type.dart';
 import 'package:tiep_song/features/sos/presentation/bloc/sos/sos_bloc.dart';
 import 'package:tiep_song/features/sos/presentation/utils/sos_share_text.dart';
@@ -26,7 +28,7 @@ class _SosViewState extends State<SosView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text('Gửi tín hiệu SOS'),
         actions: [
@@ -46,10 +48,14 @@ class _SosViewState extends State<SosView> {
         listener: (context, state) {
           if (state.status == BaseStatus.success) {
             final lastSent = state.lastSent;
+            final isIsolated =
+                lastSent?.syncStatus == SosSyncStatus.pendingBroadcast;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text(
-                  'Đã gửi. Tín hiệu đang được chuyển đi qua mạng lưới thiết bị gần bạn.',
+                content: Text(
+                  isIsolated
+                      ? 'Đã lưu SOS. Chưa có mạng/thiết bị nào gần đây — sẽ tự gửi ngay khi có thể.'
+                      : 'Đã gửi. Tín hiệu đang được chuyển đi qua mạng lưới thiết bị gần bạn.',
                 ),
                 action: lastSent == null
                     ? null
@@ -86,8 +92,7 @@ class _SosViewState extends State<SosView> {
                   decoration: const InputDecoration(labelText: 'Bạn cần gì?'),
                   items: ReliefNeedType.values
                       .map(
-                        (t) =>
-                            DropdownMenuItem(value: t, child: Text(t.label)),
+                        (t) => DropdownMenuItem(value: t, child: Text(t.label)),
                       )
                       .toList(),
                   onChanged: (v) => setState(() => _selectedType = v!),
@@ -102,7 +107,7 @@ class _SosViewState extends State<SosView> {
                         () => _peopleCount = (_peopleCount - 1).clamp(1, 99),
                       ),
                     ),
-                    Text('$_peopleCount', style: const TextStyle(fontSize: 18)),
+                    Text('$_peopleCount', style: AppTextStyle.h3),
                     IconButton(
                       icon: const Icon(Icons.add_circle_outline),
                       onPressed: () => setState(() => _peopleCount++),
@@ -119,11 +124,11 @@ class _SosViewState extends State<SosView> {
                     onPressed: isLoading
                         ? null
                         : () => context.read<SosBloc>().add(
-                            SosSubmitted(
-                              needType: _selectedType,
-                              peopleCount: _peopleCount,
+                              SosSubmitted(
+                                needType: _selectedType,
+                                peopleCount: _peopleCount,
+                              ),
                             ),
-                          ),
                   ),
                 ),
               ],

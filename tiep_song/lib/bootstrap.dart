@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tiep_song/common/config/app_config.dart';
 import 'package:tiep_song/common/di/injector.dart';
+import 'package:tiep_song/common/logger/app_logger.dart';
 import 'package:tiep_song/common/services/mesh_service.dart';
 import 'package:tiep_song/features/sos/data/datasources/sos_local_datasource.dart';
 import 'package:tiep_song/features/sos/data/models/sos_request_dto.dart';
@@ -41,7 +42,7 @@ Future<void> bootstrap() async {
     final meshService = getIt<MeshService>();
     await meshService.start(apiKey: getIt<AppConfig>().bridgefyApiKey);
   } catch (e) {
-    debugPrint('Mesh service không khởi động được lúc bootstrap: $e');
+    AppLogger.warning('Mesh service không khởi động được lúc bootstrap: $e');
   }
 
   getIt<SosBackgroundSync>().start();

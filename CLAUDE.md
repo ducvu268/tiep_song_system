@@ -36,6 +36,11 @@ Package Flutter: `tiep_song`. Package Java: `com.tiepsong`.
 - Java backend → đọc `.claude/skills/spring-boot-backend/SKILL.md`.
 - Mesh/Bluetooth chỉ test được trên ≥2 thiết bị thật, không phải emulator.
 - Thứ tự MVP: SOS local→mesh→sync→server chạy được trước, polish sau.
+- **Trước khi bắt tay vào 1 feature/fix mới: luôn nhắc user `git checkout
+  main && git pull` rồi tạo branch mới từ đó.** Không code thẳng lên branch
+  cũ đã có PR merge — tránh phải `git stash` giữa chừng khi phát hiện branch
+  sai. User tự chạy git thủ công (commit/push/PR) — Claude chỉ soạn sẵn
+  title/description, không tự ý chạy git commands thay user.
 
 ## Cấu trúc repo
 ```
