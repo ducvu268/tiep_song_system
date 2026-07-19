@@ -116,6 +116,7 @@ class AppButton extends StatelessWidget {
 
     final button = switch (variant) {
       ButtonVariant.primary => Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
         decoration: BoxDecoration(
           color: _disabled ? AppColor.surface2 : AppColor.primary,
@@ -134,6 +135,7 @@ class AppButton extends StatelessWidget {
         ),
       ),
       ButtonVariant.outline => Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
         decoration: BoxDecoration(
           border: Border.all(

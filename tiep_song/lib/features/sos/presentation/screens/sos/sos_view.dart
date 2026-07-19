@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tiep_song/common/bloc/base_state.dart';
 import 'package:tiep_song/common/router/app_router.dart';
+import 'package:tiep_song/common/widgets/app_button.dart';
 import 'package:tiep_song/features/sos/domain/models/relief_need_type.dart';
 import 'package:tiep_song/features/sos/presentation/bloc/sos/sos_bloc.dart';
 import 'package:tiep_song/features/sos/presentation/utils/sos_share_text.dart';
@@ -108,11 +109,10 @@ class _SosViewState extends State<SosView> {
                 const Spacer(),
                 SizedBox(
                   width: double.infinity,
-                  height: 72,
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Colors.red.shade700,
-                    ),
+                  child: AppButton.primary(
+                    label: 'GỬI SOS',
+                    size: AppButtonSize.large,
+                    isLoading: isLoading,
                     onPressed: isLoading
                         ? null
                         : () => context.read<SosBloc>().add(
@@ -120,12 +120,6 @@ class _SosViewState extends State<SosView> {
                               needType: _selectedType,
                               peopleCount: _peopleCount,
                             ),
-                          ),
-                    child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
-                            'GỬI SOS',
-                            style: TextStyle(fontSize: 22),
                           ),
                   ),
                 ),
