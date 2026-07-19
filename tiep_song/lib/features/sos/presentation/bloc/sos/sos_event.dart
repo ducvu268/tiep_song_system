@@ -21,3 +21,14 @@ class SosSubmitted extends SosEvent {
   @override
   List<Object?> get props => [needType, peopleCount, note];
 }
+
+/// Nội bộ — bloc tự bắn khi MeshService báo số thiết bị kết nối trực tiếp
+/// thay đổi (dùng cho banner "đang thấy X thiết bị gần đây" ở SosView).
+class SosMeshPeerCountChanged extends SosEvent {
+  final int count;
+
+  const SosMeshPeerCountChanged(this.count);
+
+  @override
+  List<Object?> get props => [count];
+}

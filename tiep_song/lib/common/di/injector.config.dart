@@ -100,6 +100,12 @@ extension GetItInjectableX on _i174.GetIt {
           connectivityService: gh<_i559.ConnectivityService>(),
           syncPendingSosUseCase: gh<_i29.SyncPendingSosUseCase>(),
         ));
+    gh.factory<_i519.SosBloc>(() => _i519.SosBloc(
+          sendSosUseCase: gh<_i714.SendSosUseCase>(),
+          locationService: gh<_i700.LocationService>(),
+          getEmergencyContactUseCase: gh<_i102.GetEmergencyContactUseCase>(),
+          meshService: gh<_i954.MeshService>(),
+        ));
     gh.factory<_i789.SettingsBloc>(() => _i789.SettingsBloc(
           getEmergencyContactUseCase: gh<_i102.GetEmergencyContactUseCase>(),
           saveEmergencyContactUseCase: gh<_i1005.SaveEmergencyContactUseCase>(),
@@ -107,11 +113,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i582.SosListBloc>(() => _i582.SosListBloc(
           getSosHistoryUseCase: gh<_i802.GetSosHistoryUseCase>(),
           watchIncomingSosUseCase: gh<_i409.WatchIncomingSosUseCase>(),
-        ));
-    gh.factory<_i519.SosBloc>(() => _i519.SosBloc(
-          sendSosUseCase: gh<_i714.SendSosUseCase>(),
-          locationService: gh<_i700.LocationService>(),
-          getEmergencyContactUseCase: gh<_i102.GetEmergencyContactUseCase>(),
         ));
     return this;
   }
