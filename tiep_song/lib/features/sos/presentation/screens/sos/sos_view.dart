@@ -25,6 +25,13 @@ class SosView extends StatefulWidget {
 class _SosViewState extends State<SosView> {
   ReliefNeedType _selectedType = ReliefNeedType.rescue;
   int _peopleCount = 1;
+  final _noteController = TextEditingController();
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,7 @@ class _SosViewState extends State<SosView> {
       body: BlocConsumer<SosBloc, SosState>(
         listener: (context, state) {
           if (state.status == BaseStatus.success) {
+            _noteController.clear();
             final lastSent = state.lastSent;
             final isIsolated =
                 lastSent?.syncStatus == SosSyncStatus.pendingBroadcast;
@@ -114,6 +122,15 @@ class _SosViewState extends State<SosView> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _noteController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Ghi chú (tuỳ chọn)',
+                    hintText: 'Ví dụ: kẹt trong nhà, nước dâng nhanh...',
+                  ),
+                ),
                 const Spacer(),
                 SizedBox(
                   width: double.infinity,
@@ -127,6 +144,9 @@ class _SosViewState extends State<SosView> {
                               SosSubmitted(
                                 needType: _selectedType,
                                 peopleCount: _peopleCount,
+                                note: _noteController.text.trim().isEmpty
+                                    ? null
+                                    : _noteController.text.trim(),
                               ),
                             ),
                   ),
