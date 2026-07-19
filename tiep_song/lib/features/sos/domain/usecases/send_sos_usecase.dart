@@ -10,6 +10,8 @@ class SendSosParams {
   final ReliefNeedType needType;
   final int peopleCount;
   final String? note;
+  final String? contactName;
+  final String? contactPhone;
 
   const SendSosParams({
     required this.latitude,
@@ -17,6 +19,8 @@ class SendSosParams {
     required this.needType,
     required this.peopleCount,
     this.note,
+    this.contactName,
+    this.contactPhone,
   });
 }
 
@@ -33,5 +37,7 @@ class SendSosUseCase implements UseCase<SosRequest, SendSosParams> {
     needType: params.needType,
     peopleCount: params.peopleCount,
     note: params.note,
+    contactName: params.contactName,
+    contactPhone: params.contactPhone,
   );
 }

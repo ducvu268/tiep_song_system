@@ -34,6 +34,8 @@ class SosLocalDataSource {
       note: existing.note,
       createdAt: existing.createdAt,
       syncStatus: syncStatus,
+      contactName: existing.contactName,
+      contactPhone: existing.contactPhone,
     );
     await _box.put(id, updated);
   }

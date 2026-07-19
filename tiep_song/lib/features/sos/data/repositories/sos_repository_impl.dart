@@ -44,6 +44,8 @@ class SosRepositoryImpl implements SosRepository {
     required ReliefNeedType needType,
     required int peopleCount,
     String? note,
+    String? contactName,
+    String? contactPhone,
   }) async {
     final entity = SosRequest(
       id: _uuid.v4(),
@@ -54,6 +56,8 @@ class SosRepositoryImpl implements SosRepository {
       note: note,
       createdAt: DateTime.now(),
       syncStatus: SosSyncStatus.pendingBroadcast,
+      contactName: contactName,
+      contactPhone: contactPhone,
     );
     var dto = SosRequestDto.fromDomain(entity);
 

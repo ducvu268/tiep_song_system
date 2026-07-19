@@ -7,6 +7,7 @@ import 'package:tiep_song/common/services/mesh_service.dart';
 import 'package:tiep_song/features/sos/data/datasources/sos_local_datasource.dart';
 import 'package:tiep_song/features/sos/data/models/sos_request_dto.dart';
 import 'package:tiep_song/features/sos/domain/services/sos_background_sync.dart';
+import 'package:tiep_song/features/settings/data/datasources/settings_local_datasource.dart';
 
 /// Thứ tự khởi tạo có chủ đích:
 ///   1. Hive trước tiên — nếu bước sau lỗi, local storage vẫn sẵn sàng
@@ -25,6 +26,7 @@ Future<void> bootstrap() async {
   await Hive.initFlutter();
   Hive.registerAdapter(SosRequestDtoAdapter());
   await Hive.openBox<SosRequestDto>(sosBoxName);
+  await Hive.openBox(settingsBoxName);
 
   getIt.registerSingleton<AppConfig>(
     AppConfig(

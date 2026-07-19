@@ -40,6 +40,10 @@ dependencies:
   # Vị trí — bắt buộc để định vị người cần cứu trợ
   geolocator: ^13.0.2
 
+  # Bản đồ SOS gần đó — OpenStreetMap, miễn phí, không cần API key
+  flutter_map: ^8.3.1
+  latlong2: ^0.10.1
+
   # Phát hiện có/mất mạng để quyết định lúc nào sync lên backend
   connectivity_plus: ^6.1.3
 

@@ -1,10 +1,14 @@
 import 'package:go_router/go_router.dart';
+import 'package:tiep_song/features/settings/presentation/screens/settings/settings_screen.dart';
 import 'package:tiep_song/features/sos/presentation/screens/sos/sos_screen.dart';
 import 'package:tiep_song/features/sos/presentation/screens/sos_list/sos_list_screen.dart';
+import 'package:tiep_song/features/sos/presentation/screens/sos_map/sos_map_screen.dart';
 
 abstract final class AppRoute {
   static const sos = '/';
   static const sosList = '/sos/list';
+  static const sosMap = '/sos/map';
+  static const settings = '/settings';
 }
 
 final appRouter = GoRouter(
@@ -14,6 +18,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoute.sosList,
       builder: (context, state) => const SosListScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.sosMap,
+      builder: (context, state) => const SosMapScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.settings,
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );

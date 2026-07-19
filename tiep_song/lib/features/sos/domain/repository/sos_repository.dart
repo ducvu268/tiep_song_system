@@ -12,6 +12,8 @@ abstract class SosRepository {
     required ReliefNeedType needType,
     required int peopleCount,
     String? note,
+    String? contactName,
+    String? contactPhone,
   });
 
   /// Toàn bộ SOS request đang lưu local — của chính máy này và những cái
