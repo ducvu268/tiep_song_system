@@ -8,6 +8,7 @@ import 'package:tiep_song/common/widgets/app_button.dart';
 import 'package:tiep_song/features/sos/domain/models/relief_need_type.dart';
 import 'package:tiep_song/features/sos/presentation/bloc/sos/sos_bloc.dart';
 import 'package:tiep_song/features/sos/presentation/utils/sos_share_text.dart';
+import 'package:tiep_song/features/sos/presentation/widgets/mesh_peer_banner.dart';
 
 /// Màn hình khẩn cấp: chủ đích tối giản, nút to, ít bước thao tác.
 /// Người dùng có thể đang hoảng loạn/mất điện/tay run — không phải lúc
@@ -78,6 +79,8 @@ class _SosViewState extends State<SosView> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
+                MeshPeerBanner(peerCount: state.meshPeerCount),
+                const SizedBox(height: 16),
                 DropdownButtonFormField<ReliefNeedType>(
                   initialValue: _selectedType,
                   decoration: const InputDecoration(labelText: 'Bạn cần gì?'),
