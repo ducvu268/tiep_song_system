@@ -15,6 +15,18 @@ import 'package:tiep_song/common/network/api_client.dart' as _i765;
 import 'package:tiep_song/common/services/connectivity_service.dart' as _i559;
 import 'package:tiep_song/common/services/location_service.dart' as _i700;
 import 'package:tiep_song/common/services/mesh_service.dart' as _i954;
+import 'package:tiep_song/features/onboarding/data/datasources/onboarding_local_datasource.dart'
+    as _i616;
+import 'package:tiep_song/features/onboarding/data/repositories/onboarding_repository_impl.dart'
+    as _i208;
+import 'package:tiep_song/features/onboarding/domain/repository/onboarding_repository.dart'
+    as _i930;
+import 'package:tiep_song/features/onboarding/domain/usecases/has_seen_onboarding_usecase.dart'
+    as _i125;
+import 'package:tiep_song/features/onboarding/domain/usecases/mark_onboarding_seen_usecase.dart'
+    as _i538;
+import 'package:tiep_song/features/onboarding/presentation/bloc/onboarding/onboarding_bloc.dart'
+    as _i728;
 import 'package:tiep_song/features/settings/data/datasources/settings_local_datasource.dart'
     as _i152;
 import 'package:tiep_song/features/settings/data/repositories/settings_repository_impl.dart'
@@ -66,6 +78,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i152.SettingsLocalDataSource>(
         () => _i152.SettingsLocalDataSource());
     gh.factory<_i1064.SosLocalDataSource>(() => _i1064.SosLocalDataSource());
+    gh.factory<_i616.OnboardingLocalDataSource>(
+        () => _i616.OnboardingLocalDataSource());
     gh.lazySingleton<_i700.LocationService>(() => _i700.LocationService());
     gh.lazySingleton<_i954.MeshService>(() => _i954.MeshService());
     gh.lazySingleton<_i559.ConnectivityService>(
@@ -82,8 +96,20 @@ extension GetItInjectableX on _i174.GetIt {
           remoteDataSource: gh<_i16.SosRemoteDataSource>(),
           connectivityService: gh<_i559.ConnectivityService>(),
         ));
+    gh.factory<_i930.OnboardingRepository>(() =>
+        _i208.OnboardingRepositoryImpl(gh<_i616.OnboardingLocalDataSource>()));
     gh.factory<_i217.SettingsRepository>(() =>
         _i672.SettingsRepositoryImpl(gh<_i152.SettingsLocalDataSource>()));
+    gh.factory<_i125.HasSeenOnboardingUseCase>(
+        () => _i125.HasSeenOnboardingUseCase(gh<_i930.OnboardingRepository>()));
+    gh.factory<_i538.MarkOnboardingSeenUseCase>(() =>
+        _i538.MarkOnboardingSeenUseCase(gh<_i930.OnboardingRepository>()));
+    gh.factory<_i728.OnboardingBloc>(() => _i728.OnboardingBloc(
+          markOnboardingSeenUseCase: gh<_i538.MarkOnboardingSeenUseCase>(),
+          locationService: gh<_i700.LocationService>(),
+          meshService: gh<_i954.MeshService>(),
+          appConfig: gh<_i131.AppConfig>(),
+        ));
     gh.factory<_i1005.SaveEmergencyContactUseCase>(() =>
         _i1005.SaveEmergencyContactUseCase(gh<_i217.SettingsRepository>()));
     gh.factory<_i102.GetEmergencyContactUseCase>(
