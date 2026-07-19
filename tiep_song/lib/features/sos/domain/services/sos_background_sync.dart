@@ -23,15 +23,14 @@ class SosBackgroundSync {
   final SyncPendingSosUseCase _syncPendingSos;
 
   StreamSubscription<void>? _meshSubscription;
-  StreamSubscription<bool>? _connectivitySubscription;
 
   SosBackgroundSync({
     required SosRepository repository,
     required ConnectivityService connectivityService,
     required SyncPendingSosUseCase syncPendingSosUseCase,
-  }) : _repository = repository,
-       _connectivity = connectivityService,
-       _syncPendingSos = syncPendingSosUseCase;
+  })  : _repository = repository,
+        _connectivity = connectivityService,
+        _syncPendingSos = syncPendingSosUseCase;
 
   void start() {
     if (_meshSubscription != null) return;
@@ -42,7 +41,7 @@ class SosBackgroundSync {
       ),
     );
 
-    _connectivitySubscription = _connectivity.onConnectivityChanged
+    _connectivity.onConnectivityChanged
         .where((isOnline) => isOnline)
         .listen((_) => _runSync());
 
@@ -60,12 +59,5 @@ class SosBackgroundSync {
     } catch (e) {
       AppLogger.warning('SosBackgroundSync: đồng bộ thất bại: $e');
     }
-  }
-
-  Future<void> dispose() async {
-    await _meshSubscription?.cancel();
-    await _connectivitySubscription?.cancel();
-    _meshSubscription = null;
-    _connectivitySubscription = null;
   }
 }

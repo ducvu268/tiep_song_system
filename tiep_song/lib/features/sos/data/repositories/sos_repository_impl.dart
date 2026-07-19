@@ -1,6 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
+import 'package:tiep_song/common/errors/app_exception.dart';
 import 'package:tiep_song/common/logger/app_logger.dart';
+import 'package:tiep_song/common/services/connectivity_service.dart';
 import 'package:tiep_song/features/sos/data/datasources/sos_local_datasource.dart';
 import 'package:tiep_song/features/sos/data/datasources/sos_mesh_datasource.dart';
 import 'package:tiep_song/features/sos/data/datasources/sos_remote_datasource.dart';
@@ -27,15 +29,18 @@ class SosRepositoryImpl implements SosRepository {
   final SosLocalDataSource _local;
   final SosMeshDataSource _mesh;
   final SosRemoteDataSource _remote;
+  final ConnectivityService _connectivity;
   final _uuid = const Uuid();
 
   SosRepositoryImpl({
     required SosLocalDataSource localDataSource,
     required SosMeshDataSource meshDataSource,
     required SosRemoteDataSource remoteDataSource,
-  }) : _local = localDataSource,
-       _mesh = meshDataSource,
-       _remote = remoteDataSource;
+    required ConnectivityService connectivityService,
+  })  : _local = localDataSource,
+        _mesh = meshDataSource,
+        _remote = remoteDataSource,
+        _connectivity = connectivityService;
 
   @override
   Future<SosRequest> createSos({
@@ -72,9 +77,20 @@ class SosRepositoryImpl implements SosRepository {
         entity.copyWith(syncStatus: SosSyncStatus.relayedToMesh),
       );
     } catch (e) {
-      AppLogger.warning(
-        'Broadcast mesh thất bại cho SOS ${dto.id}, vẫn còn trong local: $e',
-      );
+      final isOnline = await _connectivity.isOnline;
+      if (!isOnline) {
+        // Cả mesh lẫn mạng đều không có — máy đang cô lập hoàn toàn. Đây là
+        // điều kiện vận hành "bình thường" của app này (xem
+        // NoConnectivityException), KHÔNG throw để tránh biến 1 lần gửi SOS
+        // đã lưu local thành công thành trạng thái failure ở tầng bloc/UI.
+        AppLogger.warning(
+          '${const NoConnectivityException().message} SOS ${dto.id} vẫn an toàn trong local, sẽ tự gửi lại khi có thể.',
+        );
+      } else {
+        AppLogger.warning(
+          'Broadcast mesh thất bại cho SOS ${dto.id}, vẫn còn trong local: $e',
+        );
+      }
     }
 
     return dto.toDomain();
@@ -86,8 +102,8 @@ class SosRepositoryImpl implements SosRepository {
 
   @override
   Future<List<SosRequest>> getPendingSync() => Future.value(
-    _local.getPendingSync().map((dto) => dto.toDomain()).toList(),
-  );
+        _local.getPendingSync().map((dto) => dto.toDomain()).toList(),
+      );
 
   @override
   Future<void> syncToServer(SosRequest request) async {
@@ -98,11 +114,11 @@ class SosRepositoryImpl implements SosRepository {
 
   @override
   Stream<SosRequest> get incomingFromMesh => _mesh.incoming.asyncMap((
-    dto,
-  ) async {
-    // Request nhận từ hàng xóm qua mesh cũng phải lưu local — chính máy
-    // này có thể là "cầu nối ra ngoài" duy nhất, cần giữ lại để sync sau.
-    await _local.save(dto);
-    return dto.toDomain();
-  });
+        dto,
+      ) async {
+        // Request nhận từ hàng xóm qua mesh cũng phải lưu local — chính máy
+        // này có thể là "cầu nối ra ngoài" duy nhất, cần giữ lại để sync sau.
+        await _local.save(dto);
+        return dto.toDomain();
+      });
 }

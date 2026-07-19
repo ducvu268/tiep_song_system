@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tiep_song/common/bloc/base_state.dart';
+import 'package:tiep_song/common/constants/app_text_style.dart';
 import 'package:tiep_song/common/widgets/app_button.dart';
 import 'package:tiep_song/common/widgets/app_scaffold.dart';
 import 'package:tiep_song/features/settings/presentation/bloc/settings/settings_bloc.dart';
@@ -55,7 +56,7 @@ class _SettingsViewState extends State<SettingsView> {
               children: [
                 const Text(
                   'Thông tin liên hệ khẩn cấp',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  style: AppTextStyle.h3,
                 ),
                 const SizedBox(height: 4),
                 const Text(
@@ -80,11 +81,11 @@ class _SettingsViewState extends State<SettingsView> {
                   label: 'Lưu',
                   isLoading: isLoading,
                   onPressed: () => context.read<SettingsBloc>().add(
-                    SettingsContactSaved(
-                      name: _nameController.text.trim(),
-                      phone: _phoneController.text.trim(),
-                    ),
-                  ),
+                        SettingsContactSaved(
+                          name: _nameController.text.trim(),
+                          phone: _phoneController.text.trim(),
+                        ),
+                      ),
                 ),
               ],
             ),

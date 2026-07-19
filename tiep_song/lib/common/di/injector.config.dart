@@ -76,13 +76,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i765.ApiClient(gh<_i131.AppConfig>()));
     gh.factory<_i16.SosRemoteDataSource>(
         () => _i16.SosRemoteDataSource(gh<_i765.ApiClient>()));
-    gh.factory<_i217.SettingsRepository>(() =>
-        _i672.SettingsRepositoryImpl(gh<_i152.SettingsLocalDataSource>()));
     gh.factory<_i473.SosRepository>(() => _i570.SosRepositoryImpl(
           localDataSource: gh<_i1064.SosLocalDataSource>(),
           meshDataSource: gh<_i428.SosMeshDataSource>(),
           remoteDataSource: gh<_i16.SosRemoteDataSource>(),
+          connectivityService: gh<_i559.ConnectivityService>(),
         ));
+    gh.factory<_i217.SettingsRepository>(() =>
+        _i672.SettingsRepositoryImpl(gh<_i152.SettingsLocalDataSource>()));
     gh.factory<_i1005.SaveEmergencyContactUseCase>(() =>
         _i1005.SaveEmergencyContactUseCase(gh<_i217.SettingsRepository>()));
     gh.factory<_i102.GetEmergencyContactUseCase>(
