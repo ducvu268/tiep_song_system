@@ -46,6 +46,15 @@ class SosListItem extends StatelessWidget {
             const SizedBox(height: 8),
             Text(request.note!, style: AppTextStyle.body),
           ],
+          if (request.contactName != null &&
+              request.contactName!.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              'Người gửi: ${request.contactName}'
+              '${request.contactPhone != null && request.contactPhone!.isNotEmpty ? ' · ${request.contactPhone}' : ''}',
+              style: AppTextStyle.body.copyWith(color: AppColor.textMuted),
+            ),
+          ],
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(

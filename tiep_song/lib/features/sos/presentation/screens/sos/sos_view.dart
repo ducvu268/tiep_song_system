@@ -33,6 +33,11 @@ class _SosViewState extends State<SosView> {
             tooltip: 'Các yêu cầu SOS gần đây',
             onPressed: () => context.push(AppRoute.sosList),
           ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'Cài đặt',
+            onPressed: () => context.push(AppRoute.settings),
+          ),
         ],
       ),
       body: BlocConsumer<SosBloc, SosState>(

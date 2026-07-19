@@ -38,6 +38,12 @@ class SosRequestDto extends HiveObject {
   @HiveField(7)
   final String syncStatus;
 
+  @HiveField(8)
+  final String? contactName;
+
+  @HiveField(9)
+  final String? contactPhone;
+
   SosRequestDto({
     required this.id,
     required this.latitude,
@@ -47,6 +53,8 @@ class SosRequestDto extends HiveObject {
     this.note,
     required this.createdAt,
     required this.syncStatus,
+    this.contactName,
+    this.contactPhone,
   });
 
   factory SosRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -63,6 +71,8 @@ class SosRequestDto extends HiveObject {
     note: entity.note,
     createdAt: entity.createdAt.toIso8601String(),
     syncStatus: entity.syncStatus.name,
+    contactName: entity.contactName,
+    contactPhone: entity.contactPhone,
   );
 
   SosRequest toDomain() => SosRequest(
@@ -74,5 +84,7 @@ class SosRequestDto extends HiveObject {
     note: note,
     createdAt: DateTime.parse(createdAt),
     syncStatus: SosSyncStatus.values.byName(syncStatus),
+    contactName: contactName,
+    contactPhone: contactPhone,
   );
 }

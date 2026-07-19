@@ -25,13 +25,15 @@ class SosRequestDtoAdapter extends TypeAdapter<SosRequestDto> {
       note: fields[5] as String?,
       createdAt: fields[6] as String,
       syncStatus: fields[7] as String,
+      contactName: fields[8] as String?,
+      contactPhone: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SosRequestDto obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class SosRequestDtoAdapter extends TypeAdapter<SosRequestDto> {
       ..writeByte(6)
       ..write(obj.createdAt)
       ..writeByte(7)
-      ..write(obj.syncStatus);
+      ..write(obj.syncStatus)
+      ..writeByte(8)
+      ..write(obj.contactName)
+      ..writeByte(9)
+      ..write(obj.contactPhone);
   }
 
   @override
@@ -75,6 +81,8 @@ SosRequestDto _$SosRequestDtoFromJson(Map<String, dynamic> json) =>
       note: json['note'] as String?,
       createdAt: json['createdAt'] as String,
       syncStatus: json['syncStatus'] as String,
+      contactName: json['contactName'] as String?,
+      contactPhone: json['contactPhone'] as String?,
     );
 
 Map<String, dynamic> _$SosRequestDtoToJson(SosRequestDto instance) =>
@@ -87,4 +95,6 @@ Map<String, dynamic> _$SosRequestDtoToJson(SosRequestDto instance) =>
       'note': instance.note,
       'createdAt': instance.createdAt,
       'syncStatus': instance.syncStatus,
+      'contactName': instance.contactName,
+      'contactPhone': instance.contactPhone,
     };

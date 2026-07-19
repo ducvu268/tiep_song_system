@@ -11,7 +11,16 @@ String buildSosShareText(SosRequest request) {
   final buffer = StringBuffer()
     ..writeln('[SOS - Tiếp Sóng]')
     ..writeln('Mức độ: ${request.needType.label}')
-    ..writeln('Số người cần cứu: ${request.peopleCount}')
+    ..writeln('Số người cần cứu: ${request.peopleCount}');
+
+  if (request.contactName != null && request.contactName!.isNotEmpty) {
+    buffer.writeln('Người gửi: ${request.contactName}');
+  }
+  if (request.contactPhone != null && request.contactPhone!.isNotEmpty) {
+    buffer.writeln('SĐT liên hệ: ${request.contactPhone}');
+  }
+
+  buffer
     ..writeln(
       'Toạ độ: ${request.latitude.toStringAsFixed(6)}, ${request.longitude.toStringAsFixed(6)}',
     )

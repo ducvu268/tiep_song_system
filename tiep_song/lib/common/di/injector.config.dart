@@ -15,6 +15,18 @@ import 'package:tiep_song/common/network/api_client.dart' as _i765;
 import 'package:tiep_song/common/services/connectivity_service.dart' as _i559;
 import 'package:tiep_song/common/services/location_service.dart' as _i700;
 import 'package:tiep_song/common/services/mesh_service.dart' as _i954;
+import 'package:tiep_song/features/settings/data/datasources/settings_local_datasource.dart'
+    as _i152;
+import 'package:tiep_song/features/settings/data/repositories/settings_repository_impl.dart'
+    as _i672;
+import 'package:tiep_song/features/settings/domain/repository/settings_repository.dart'
+    as _i217;
+import 'package:tiep_song/features/settings/domain/usecases/get_emergency_contact_usecase.dart'
+    as _i102;
+import 'package:tiep_song/features/settings/domain/usecases/save_emergency_contact_usecase.dart'
+    as _i1005;
+import 'package:tiep_song/features/settings/presentation/bloc/settings/settings_bloc.dart'
+    as _i789;
 import 'package:tiep_song/features/sos/data/datasources/sos_local_datasource.dart'
     as _i1064;
 import 'package:tiep_song/features/sos/data/datasources/sos_mesh_datasource.dart'
@@ -51,6 +63,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i152.SettingsLocalDataSource>(
+        () => _i152.SettingsLocalDataSource());
     gh.factory<_i1064.SosLocalDataSource>(() => _i1064.SosLocalDataSource());
     gh.lazySingleton<_i700.LocationService>(() => _i700.LocationService());
     gh.lazySingleton<_i954.MeshService>(() => _i954.MeshService());
@@ -62,11 +76,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i765.ApiClient(gh<_i131.AppConfig>()));
     gh.factory<_i16.SosRemoteDataSource>(
         () => _i16.SosRemoteDataSource(gh<_i765.ApiClient>()));
+    gh.factory<_i217.SettingsRepository>(() =>
+        _i672.SettingsRepositoryImpl(gh<_i152.SettingsLocalDataSource>()));
     gh.factory<_i473.SosRepository>(() => _i570.SosRepositoryImpl(
           localDataSource: gh<_i1064.SosLocalDataSource>(),
           meshDataSource: gh<_i428.SosMeshDataSource>(),
           remoteDataSource: gh<_i16.SosRemoteDataSource>(),
         ));
+    gh.factory<_i1005.SaveEmergencyContactUseCase>(() =>
+        _i1005.SaveEmergencyContactUseCase(gh<_i217.SettingsRepository>()));
+    gh.factory<_i102.GetEmergencyContactUseCase>(
+        () => _i102.GetEmergencyContactUseCase(gh<_i217.SettingsRepository>()));
     gh.factory<_i802.GetSosHistoryUseCase>(
         () => _i802.GetSosHistoryUseCase(gh<_i473.SosRepository>()));
     gh.factory<_i29.SyncPendingSosUseCase>(
@@ -80,13 +100,18 @@ extension GetItInjectableX on _i174.GetIt {
           connectivityService: gh<_i559.ConnectivityService>(),
           syncPendingSosUseCase: gh<_i29.SyncPendingSosUseCase>(),
         ));
-    gh.factory<_i519.SosBloc>(() => _i519.SosBloc(
-          sendSosUseCase: gh<_i714.SendSosUseCase>(),
-          locationService: gh<_i700.LocationService>(),
+    gh.factory<_i789.SettingsBloc>(() => _i789.SettingsBloc(
+          getEmergencyContactUseCase: gh<_i102.GetEmergencyContactUseCase>(),
+          saveEmergencyContactUseCase: gh<_i1005.SaveEmergencyContactUseCase>(),
         ));
     gh.factory<_i582.SosListBloc>(() => _i582.SosListBloc(
           getSosHistoryUseCase: gh<_i802.GetSosHistoryUseCase>(),
           watchIncomingSosUseCase: gh<_i409.WatchIncomingSosUseCase>(),
+        ));
+    gh.factory<_i519.SosBloc>(() => _i519.SosBloc(
+          sendSosUseCase: gh<_i714.SendSosUseCase>(),
+          locationService: gh<_i700.LocationService>(),
+          getEmergencyContactUseCase: gh<_i102.GetEmergencyContactUseCase>(),
         ));
     return this;
   }

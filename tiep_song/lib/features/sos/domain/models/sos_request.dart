@@ -12,6 +12,8 @@ class SosRequest extends Equatable {
   final String? note;
   final DateTime createdAt;
   final SosSyncStatus syncStatus;
+  final String? contactName; // tên người gửi, từ Cài đặt — có thể chưa nhập
+  final String? contactPhone;
 
   const SosRequest({
     required this.id,
@@ -22,6 +24,8 @@ class SosRequest extends Equatable {
     this.note,
     required this.createdAt,
     required this.syncStatus,
+    this.contactName,
+    this.contactPhone,
   });
 
   SosRequest copyWith({SosSyncStatus? syncStatus}) => SosRequest(
@@ -33,6 +37,8 @@ class SosRequest extends Equatable {
     note: note,
     createdAt: createdAt,
     syncStatus: syncStatus ?? this.syncStatus,
+    contactName: contactName,
+    contactPhone: contactPhone,
   );
 
   @override
@@ -45,5 +51,7 @@ class SosRequest extends Equatable {
     note,
     createdAt,
     syncStatus,
+    contactName,
+    contactPhone,
   ];
 }

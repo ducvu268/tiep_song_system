@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tiep_song/common/router/app_router.dart';
 import 'package:tiep_song/common/widgets/app_error.dart';
 import 'package:tiep_song/common/widgets/app_loading.dart';
 import 'package:tiep_song/common/widgets/app_scaffold.dart';
@@ -12,7 +14,16 @@ class SosListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: AppBar(title: const Text('Các yêu cầu SOS gần đây')),
+      appBar: AppBar(
+        title: const Text('Các yêu cầu SOS gần đây'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.map_outlined),
+            tooltip: 'Xem dạng bản đồ',
+            onPressed: () => context.push(AppRoute.sosMap),
+          ),
+        ],
+      ),
       body: BlocBuilder<SosListBloc, SosListState>(
         builder: (context, state) {
           if (state.isLoading && state.items.isEmpty) {
